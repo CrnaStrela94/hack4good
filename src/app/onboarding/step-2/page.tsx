@@ -2,15 +2,16 @@
 
 import type React from 'react';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
-import { Textarea } from '@/src/components/ui/textarea';
-import { Card, CardContent, CardFooter } from '@/src/components/ui/card';
 import StepIndicator from '@/src/components/step-indicator';
 import { Badge } from '@/src/components/ui/badge';
-import { Upload, Camera, X } from 'lucide-react';
+import { Button } from '@/src/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/src/components/ui/card';
+import { Input } from '@/src/components/ui/input';
+import { Textarea } from '@/src/components/ui/textarea';
+import { Camera, Sparkles, Upload, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { generateInterestsFromBio } from '@/src/lib/ai-api';
 
 const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Halal', 'Kosher', 'Gluten-free', 'Lactose-free'];
 const MOBILITY_OPTIONS = ['Accessible transit', 'Wheelchair access', 'No stairs', 'Near public transit'];
@@ -26,6 +27,8 @@ export default function OnboardingStep2() {
   const [bioError, setBioError] = useState('');
   const [age, setAge] = useState('');
   const [ageError, setAgeError] = useState('');
+  const [isGeneratingInterests, setIsGeneratingInterests] = useState(false);
+  const [generatedInterests, setGeneratedInterests] = useState<string[]>([]);
 
   const [selectedDietary, setSelectedDietary] = useState<string[]>([]);
   const [selectedMobility, setSelectedMobility] = useState<string[]>([]);
@@ -81,9 +84,33 @@ export default function OnboardingStep2() {
     }
   };
 
+  const handleGenerateInterests = async () => {
+    if (!bio || bio.trim().length < 10) {
+      setBioError('Please enter a longer bio for better interest suggestions');
+      return;
+    }
+
+    setIsGeneratingInterests(true);
+    try {
+      const interests = await generateInterestsFromBio(bio);
+      setGeneratedInterests(interests);
+
+      // Store in localStorage for step-3
+      localStorage.setItem('aiGeneratedInterests', JSON.stringify(interests));
+    } catch (error) {
+      console.error('Failed to generate interests:', error);
+    } finally {
+      setIsGeneratingInterests(false);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateName(name) && validateBio(bio)) {
+      // Save any generated interests to localStorage before navigating
+      if (generatedInterests.length > 0) {
+        localStorage.setItem('aiGeneratedInterests', JSON.stringify(generatedInterests));
+      }
       router.push('/onboarding/step-3');
     }
   };
@@ -160,17 +187,31 @@ export default function OnboardingStep2() {
             </div>
 
             <div className="space-y-2">
-              <Textarea
-                placeholder="Write a short bio (max 150 characters)"
-                value={bio}
-                onChange={(e) => {
-                  setBio(e.target.value);
-                  validateBio(e.target.value);
-                }}
-                onBlur={(e) => validateBio(e.target.value)}
-                className="resize-none"
-                rows={3}
-              />
+              <div className="flex items-end gap-2">
+                <div className="flex-1">
+                  <Textarea
+                    placeholder="Write a short bio (max 150 characters)"
+                    value={bio}
+                    onChange={(e) => {
+                      setBio(e.target.value);
+                      validateBio(e.target.value);
+                    }}
+                    onBlur={(e) => validateBio(e.target.value)}
+                    className="resize-none"
+                    rows={3}
+                  />
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleGenerateInterests}
+                  disabled={!bio || bio.length < 10 || isGeneratingInterests}
+                >
+                  <Sparkles className="h-4 w-4 mr-1" />
+                  {isGeneratingInterests ? 'Analyzing...' : 'Suggest Interests'}
+                </Button>
+              </div>
               <div className="flex justify-between text-xs">
                 {bioError ? (
                   <p className="text-destructive">{bioError}</p>
@@ -178,6 +219,21 @@ export default function OnboardingStep2() {
                   <p className="text-muted-foreground">{bio.length}/150</p>
                 )}
               </div>
+
+              {/* Display generated interests */}
+              {generatedInterests.length > 0 && (
+                <div className="mt-4 p-3 bg-muted/50 rounded-md">
+                  <p className="text-xs font-medium mb-2">Suggested interests based on your bio:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {generatedInterests.map((interest) => (
+                      <Badge key={interest} variant="secondary" className="text-xs">
+                        {interest}
+                      </Badge>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">These will be pre-selected in the next step</p>
+                </div>
+              )}
             </div>
 
             {/* Tag Categories */}

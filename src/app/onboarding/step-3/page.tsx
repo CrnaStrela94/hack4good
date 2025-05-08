@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/src/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/src/components/ui/card';
@@ -9,7 +9,7 @@ import { Badge } from '@/src/components/ui/badge';
 import { ScrollArea } from '@/src/components/ui/scroll-area';
 import InterestCategory from '@/src/components/interest-category';
 import { Input } from '@/src/components/ui/input';
-import { Search, Plus, X } from 'lucide-react';
+import { Search, Plus, X, Sparkles } from 'lucide-react';
 import INTERESTS from '@/mock/interests.json';
 
 export default function OnboardingStep3() {
@@ -17,6 +17,22 @@ export default function OnboardingStep3() {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [customInterest, setCustomInterest] = useState('');
+  const [aiSuggestedInterests, setAiSuggestedInterests] = useState<string[]>([]);
+
+  // Load AI-generated interests from localStorage when the component mounts
+  useEffect(() => {
+    const storedInterests = localStorage.getItem('aiGeneratedInterests');
+    if (storedInterests) {
+      try {
+        const interests = JSON.parse(storedInterests);
+        setAiSuggestedInterests(interests);
+        // Pre-select AI-generated interests
+        setSelectedInterests(interests);
+      } catch (e) {
+        console.error('Error parsing stored interests:', e);
+      }
+    }
+  }, []);
 
   const toggleInterest = (interest: string) => {
     setSelectedInterests((prev) =>
@@ -32,6 +48,8 @@ export default function OnboardingStep3() {
   };
 
   const handleSubmit = () => {
+    // Clear the localStorage item as we've used it
+    localStorage.removeItem('aiGeneratedInterests');
     router.push('/home');
   };
 
@@ -51,6 +69,28 @@ export default function OnboardingStep3() {
 
       <Card>
         <CardContent className="pt-6 space-y-6">
+          {/* AI-suggested interests section */}
+          {aiSuggestedInterests.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <h2 className="text-sm font-medium">AI-Suggested Interests</h2>
+              </div>
+              <div className="flex flex-wrap gap-2 p-3 bg-primary/5 rounded-md">
+                {aiSuggestedInterests.map((interest) => (
+                  <Badge
+                    key={interest}
+                    variant={selectedInterests.includes(interest) ? 'default' : 'outline'}
+                    className="cursor-pointer"
+                    onClick={() => toggleInterest(interest)}
+                  >
+                    {interest}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Selected interests */}
           <div className="space-y-2">
             <h2 className="text-sm font-medium">Your Selected Interests</h2>
