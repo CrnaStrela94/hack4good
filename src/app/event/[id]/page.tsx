@@ -22,9 +22,11 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
   const event = {
     id: Number.parseInt(params.id),
     title: 'Swedish Fika & Language Exchange',
-    image: '/placeholder.svg?height=400&width=800',
+    image:
+      'https://images.unsplash.com/photo-1597172300672-dbcdf33ac44e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D',
     hostName: 'Anna Lindberg',
-    hostImage: '/placeholder.svg?height=100&width=100',
+    hostImage:
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXZhdGFyfGVufDB8fDB8fHww',
     date: 'Tomorrow at 4:00 PM',
     location: 'Espresso House, Drottninggatan',
     fullAddress: 'Drottninggatan 33, 111 51 Stockholm',
@@ -36,14 +38,54 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
     spotsLeft: 4,
     tags: ['Language Exchange', 'Swedish Practice', 'Coffee', 'Fika'],
     members: [
-      { id: 1, name: 'Anna L', image: '/placeholder.svg?height=100&width=100' },
-      { id: 2, name: 'Johan S', image: '/placeholder.svg?height=100&width=100' },
-      { id: 3, name: 'Maria K', image: '/placeholder.svg?height=100&width=100' },
-      { id: 4, name: 'Erik N', image: '/placeholder.svg?height=100&width=100' },
-      { id: 5, name: 'Sofia B', image: '/placeholder.svg?height=100&width=100' },
-      { id: 6, name: 'Lars A', image: '/placeholder.svg?height=100&width=100' },
-      { id: 7, name: 'Karin T', image: '/placeholder.svg?height=100&width=100' },
-      { id: 8, name: 'Anders P', image: '/placeholder.svg?height=100&width=100' },
+      {
+        id: 1,
+        name: 'Anna L',
+        image:
+          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXZhdGFyfGVufDB8fDB8fHww',
+      },
+      {
+        id: 2,
+        name: 'Johan S',
+        image:
+          'https://plus.unsplash.com/premium_photo-1671656349218-5218444643d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXZhdGFyfGVufDB8fDB8fHww',
+      },
+      {
+        id: 3,
+        name: 'Maria K',
+        image:
+          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fHww',
+      },
+      {
+        id: 4,
+        name: 'Erik N',
+        image:
+          'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww',
+      },
+      {
+        id: 5,
+        name: 'Sofia B',
+        image:
+          'https://plus.unsplash.com/premium_photo-1670884441012-c5cf195c062a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww',
+      },
+      {
+        id: 6,
+        name: 'Lars A',
+        image:
+          'https://plus.unsplash.com/premium_photo-1664536392779-049ba8fde933?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YXZhdGFyfGVufDB8fDB8fHww',
+      },
+      {
+        id: 7,
+        name: 'Karin T',
+        image:
+          'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D',
+      },
+      {
+        id: 8,
+        name: 'Anders P',
+        image:
+          'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D',
+      },
     ],
     suggestedInterests: ['Swedish Culture', 'Books', 'Board Games'],
   };
@@ -240,7 +282,10 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
 
                   <div className="flex gap-2">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder.svg?height=100&width=100" alt="Maria" />
+                      <AvatarImage
+                        src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fHww"
+                        alt="Maria"
+                      />
                       <AvatarFallback>MK</AvatarFallback>
                     </Avatar>
                     <div className="bg-muted rounded-lg p-3 max-w-[80%]">
@@ -254,7 +299,10 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
 
                   <div className="flex gap-2">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder.svg?height=100&width=100" alt="Johan" />
+                      <AvatarImage
+                        src="https://plus.unsplash.com/premium_photo-1671656349218-5218444643d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXZhdGFyfGVufDB8fDB8fHww"
+                        alt="Johan"
+                      />
                       <AvatarFallback>JS</AvatarFallback>
                     </Avatar>
                     <div className="bg-muted rounded-lg p-3 max-w-[80%]">

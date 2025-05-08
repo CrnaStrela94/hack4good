@@ -24,7 +24,7 @@ const navItems = [
   {
     label: 'Notifications',
     icon: Bell,
-    href: '/notifications',
+    href: '/notification',
   },
   {
     label: 'Profile',

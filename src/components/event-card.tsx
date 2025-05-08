@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/src/components/ui/avatar';
@@ -5,6 +6,7 @@ import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/src/components/ui/card';
 import { Heart, MessageCircle, Share2, Users } from 'lucide-react';
+import { useState } from 'react';
 
 interface Event {
   id: number;
@@ -26,6 +28,12 @@ interface EventCardProps {
 }
 
 export default function EventCard({ event }: EventCardProps) {
+  const [like, setLike] = useState(false);
+
+  function handleLike() {
+    setLike(!like);
+  }
+
   return (
     <Card className="overflow-hidden">
       <CardHeader className="px-0 pt-0 pb-0">
@@ -82,8 +90,8 @@ export default function EventCard({ event }: EventCardProps) {
       </CardContent>
       <CardFooter className="px-4 py-3 flex justify-between border-t">
         <div className="flex gap-4">
-          <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
-            <Heart className="h-5 w-5" />
+          <Button variant="ghost" size="sm" className="h-9 w-9 p-0" onClick={handleLike}>
+            <Heart className={`h-5 w-5 ${like ? 'text-red-500 fill-red-500' : ''}`} />
             <span className="sr-only">Like</span>
           </Button>
           <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
