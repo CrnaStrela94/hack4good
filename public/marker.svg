@@ -1,0 +1,15 @@
+<!-- filepath: /public/marker.svg -->
+<svg width="48" height="56" viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="0" y="0" width="48" height="56" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <ellipse cx="24" cy="22" rx="18" ry="18" fill="#005293"/>
+    <rect x="20" y="8" width="8" height="28" rx="4" fill="#FECC02"/>
+    <rect x="10" y="18" width="28" height="8" rx="4" fill="#FECC02"/>
+    <path d="M24 40C18 40 6 44 6 52V54H42V52C42 44 30 40 24 40Z" fill="#005293"/>
+    <ellipse cx="24" cy="22" rx="8" ry="8" fill="#fff" fill-opacity="0.15"/>
+  </g>
+</svg>

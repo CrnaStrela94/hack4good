@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
 import LanguageSelector from '@/src/components/language-selector';
 import AccessibilityToggle from '@/src/components/accessibility-toggle';
-import SwedenMap from '@/src/components/sweden-map';
+import { SwedenMap } from '../components/sweden-map';
 
 export default function WelcomePage() {
   return (
