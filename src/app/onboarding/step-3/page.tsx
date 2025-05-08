@@ -106,7 +106,7 @@ export default function OnboardingStep3() {
   };
 
   const handleSubmit = () => {
-    router.push('/app/home');
+    router.push('/home');
   };
 
   // Filter interests based on search query

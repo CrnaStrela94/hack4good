@@ -96,7 +96,7 @@ export default function EventCard({ event }: EventCardProps) {
           </Button>
         </div>
         <Button size="sm" asChild>
-          <Link href={`/app/event/${event.id}`}>View Details</Link>
+          <Link href={`/event/${event.id}`}>View Details</Link>
         </Button>
       </CardFooter>
     </Card>

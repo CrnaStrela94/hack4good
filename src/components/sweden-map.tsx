@@ -361,7 +361,7 @@ export default function SwedenMap() {
             ))}
 
             <Button asChild className="w-full">
-              <Link href="/app/discover">View All Groups in {selectedRegion?.name}</Link>
+              <Link href="/discover">View All Groups in {selectedRegion?.name}</Link>
             </Button>
           </div>
         </DialogContent>
