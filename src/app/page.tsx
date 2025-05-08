@@ -3,6 +3,7 @@ import { Button } from '@/src/components/ui/button';
 import LanguageSelector from '@/src/components/language-selector';
 import AccessibilityToggle from '@/src/components/accessibility-toggle';
 import { SwedenMap } from '../components/sweden-map';
+import events from '@/mock/events.json';
 
 export default function WelcomePage() {
   return (
@@ -19,7 +20,7 @@ export default function WelcomePage() {
         </p>
 
         <div className="w-full max-w-4xl mt-8 mb-8">
-          <SwedenMap />
+          <SwedenMap events={events} />
         </div>
 
         <Button asChild className="mt-4 px-8 py-6 text-lg">

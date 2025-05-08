@@ -1,0 +1,21 @@
+[
+  {
+    "category": "Sports",
+    "items": ["Football", "Basketball", "Hockey", "Tennis", "Hiking", "Running", "Cycling", "Swimming", "Yoga", "Gym"]
+  },
+  {
+    "category": "Culture",
+    "items": [
+      "Museums",
+      "Theatre",
+      "Opera",
+      "Cinema",
+      "Art Galleries",
+      "History",
+      "Literature",
+      "Music",
+      "Dancing",
+      "Festivals"
+    ]
+  }
+]

@@ -12,39 +12,15 @@ import { Badge } from '@/src/components/ui/badge';
 import { Switch } from '@/src/components/ui/switch';
 import { Camera, Edit2, LogOut, Mail, Phone, Save, User, X } from 'lucide-react';
 import AppLayout from '@/src/app/layout-with-nav';
+import userMock from '@/mock/user.json';
 
 export default function ProfilePage() {
   // Mock user data from registration
-  const [userData, setUserData] = useState({
-    name: 'Anna Johansson',
-    email: 'anna.johansson@example.com',
-    phone: '+46 70 123 4567',
-    bio: 'New to Sweden and looking to connect with people who share my interests in hiking, cooking, and art.',
-    photoUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0',
-    age: '28',
-    interests: ['Hiking', 'Swedish Culture', 'Cooking', 'Art', 'Photography'],
-    dietaryPreferences: ['Vegetarian'],
-    mobilityAccessibility: ['Near public transit'],
-    familyStatus: ['Family-friendly'],
-    petPreferences: ['Dog-friendly'],
-    language: 'English',
-    notifications: {
-      email: true,
-      app: true,
-      events: true,
-      messages: true,
-    },
-    privacy: {
-      profileVisibility: 'public',
-      showActivity: true,
-      showLocation: false,
-    },
-  });
+  const [userData, setUserData] = useState(userMock);
+  const [editedUserData, setEditedUserData] = useState(userMock);
 
   // Edit mode state
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editedUserData, setEditedUserData] = useState(userData);
 
   // Handle edit mode submission
   const handleSaveProfile = () => {

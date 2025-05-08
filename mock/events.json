@@ -1,0 +1,97 @@
+[
+  {
+    "id": 1,
+    "title": "Swedish Fika & Language Exchange",
+    "image": "https://images.unsplash.com/photo-1509365465985-25d11c17e812?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YnVsbGFyfGVufDB8fDB8fHww",
+    "hostName": "Anna Lindberg",
+    "hostImage": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXZhdGFyfGVufDB8fDB8fHww",
+    "date": "Tomorrow at 4:00 PM",
+    "location": "Espresso House, Drottninggatan",
+    "coordinates": {
+      "lat": 59.3323,
+      "lng": 18.0664
+    },
+    "regionId": "stockholm",
+    "distance": "1.2 km away",
+    "interestMatch": 85,
+    "attendees": 8,
+    "spotsLeft": 4,
+    "tags": ["Language Exchange", "Swedish Practice", "Coffee"]
+  },
+  {
+    "id": 2,
+    "title": "Weekend Hiking in Söderåsen",
+    "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+    "hostName": "Erik Svensson",
+    "hostImage": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+    "date": "Saturday at 9:00 AM",
+    "location": "Söderåsen National Park",
+    "coordinates": {
+      "lat": 56.0218,
+      "lng": 13.1714
+    },
+    "regionId": "skane",
+    "distance": "15 km away",
+    "interestMatch": 92,
+    "attendees": 12,
+    "spotsLeft": 3,
+    "tags": ["Hiking", "Outdoor Activities", "Nature"]
+  },
+  {
+    "id": 3,
+    "title": "Swedish Cooking Workshop",
+    "image": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+    "hostName": "Maria Karlsson",
+    "hostImage": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+    "date": "Friday at 6:00 PM",
+    "location": "Community Kitchen, Göteborg",
+    "coordinates": {
+      "lat": 57.7089,
+      "lng": 11.9746
+    },
+    "regionId": "goteborg",
+    "distance": "0.8 km away",
+    "interestMatch": 78,
+    "attendees": 6,
+    "spotsLeft": 6,
+    "tags": ["Cooking", "Swedish Culture", "Food"]
+  },
+  {
+    "id": 4,
+    "title": "Weekend Hiking in Söderåsen",
+    "image": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+    "hostName": "Erik Svensson",
+    "hostImage": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0",
+    "date": "Saturday at 9:00 AM",
+    "location": "Söderåsen National Park",
+    "coordinates": {
+      "lat": 56.0218,
+      "lng": 13.1714
+    },
+    "regionId": "skane",
+    "distance": "15 km away",
+    "interestMatch": 92,
+    "attendees": 12,
+    "spotsLeft": 3,
+    "tags": ["Hiking", "Outdoor Activities", "Nature"]
+  },
+  {
+    "id": 5,
+    "title": "Swedish Fika & Language Exchange",
+    "image": "https://images.unsplash.com/photo-1509365465985-25d11c17e812?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YnVsbGFyfGVufDB8fDB8fHww",
+    "hostName": "Anna Lindberg",
+    "hostImage": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXZhdGFyfGVufDB8fDB8fHww",
+    "date": "Tomorrow at 4:00 PM",
+    "location": "Espresso House, Drottninggatan",
+    "coordinates": {
+      "lat": 57.7089,
+      "lng": 11.9355
+    },
+    "regionId": "stockholm",
+    "distance": "1.2 km away",
+    "interestMatch": 85,
+    "attendees": 8,
+    "spotsLeft": 4,
+    "tags": ["Language Exchange", "Swedish Practice", "Coffee"]
+  }
+]

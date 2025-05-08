@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
@@ -19,17 +19,36 @@ import { Badge } from '@/src/components/ui/badge';
 import { Slider } from '@/src/components/ui/slider';
 import { ScrollArea } from '@/src/components/ui/scroll-area';
 import AppLayout from '@/src/app/layout-with-nav';
+import { SwedenMap } from '@/src/components/sweden-map';
+import { useIsMobile } from '@/hooks/use-mobile';
+import EVENTS from '@/mock/events.json';
 
 export default function DiscoverPage() {
   const [sortBy, setSortBy] = useState('relevance');
   const [distance, setDistance] = useState(15);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showMap, setShowMap] = useState(false);
+  const isMobile = useIsMobile();
 
   const [selectedInterests, setSelectedInterests] = useState<string[]>([
     'Language Exchange',
     'Hiking',
     'Swedish Traditions',
   ]);
+
+  const [filteredEvents, setFilteredEvents] = useState(EVENTS);
+
+  const [split, setSplit] = useState(50); // percent height for map on mobile
+  const draggingRef = useRef(false);
+  const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    if (selectedInterests.length > 0) {
+      setFilteredEvents(EVENTS.filter((event) => event.tags.some((tag) => selectedInterests.includes(tag))));
+    } else {
+      setFilteredEvents(EVENTS);
+    }
+  }, [selectedInterests]);
 
   const interests = [
     'Language Exchange',
@@ -50,10 +69,70 @@ export default function DiscoverPage() {
     );
   };
 
+  const handleMapToggle = () => setShowMap((v) => !v);
+
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    draggingRef.current = true;
+    setIsDragging(true);
+    document.body.style.userSelect = 'none';
+  };
+
+  const handleDragEnd = () => {
+    draggingRef.current = false;
+    setIsDragging(false);
+    document.body.style.userSelect = '';
+  };
+
+  const handleDrag = (e: MouseEvent | TouchEvent) => {
+    if (!draggingRef.current) return;
+    let clientY = 0;
+    if ('touches' in e) {
+      clientY = e.touches[0].clientY;
+    } else {
+      clientY = e.clientY;
+    }
+    const container = document.getElementById('map-list-container');
+    if (container) {
+      const rect = container.getBoundingClientRect();
+      let percent = ((clientY - rect.top) / rect.height) * 100;
+      percent = Math.max(20, Math.min(80, percent)); // clamp between 20% and 80%
+      setSplit(percent);
+    }
+  };
+
+  useEffect(() => {
+    const onMove = (e: any) => handleDrag(e);
+    const onUp = () => handleDragEnd();
+    if (isDragging) {
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('touchmove', onMove);
+      window.addEventListener('mouseup', onUp);
+      window.addEventListener('touchend', onUp);
+    }
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('touchend', onUp);
+    };
+  }, [isDragging]);
+
+  const ListView = (
+    <div className="flex-1 overflow-auto">
+      <EventFeed />
+    </div>
+  );
+
+  const MapView = (
+    <div className="flex-1 min-h-[300px]">
+      <SwedenMap events={filteredEvents} filterTags={selectedInterests} />
+    </div>
+  );
+
   return (
     <AppLayout>
       <div className="pb-20">
-        <header className="px-4 pt-6 pb-3 border-b sticky top-0 bg-background z-10 space-y-4">
+        <header className="px-4 pt-6 pb-3 border-b sticky top-0 bg-background bg-white z-10 space-y-4">
           <h1 className="text-2xl font-bold">Discover</h1>
 
           <div className="flex items-center gap-2">
@@ -67,7 +146,13 @@ export default function DiscoverPage() {
               />
             </div>
 
-            <Button variant="outline" size="icon" className="shrink-0">
+            <Button
+              variant={showMap ? 'default' : 'outline'}
+              size="icon"
+              className="shrink-0"
+              onClick={handleMapToggle}
+              aria-pressed={showMap}
+            >
               <MapPin className="h-4 w-4" />
             </Button>
 
@@ -226,7 +311,54 @@ export default function DiscoverPage() {
           </div>
         </header>
 
-        <EventFeed />
+        {showMap ? (
+          <div
+            id="map-list-container"
+            className={
+              isMobile ? 'flex flex-col h-[calc(100dvh-8rem)] relative' : 'flex flex-row h-[calc(100dvh-8rem)]'
+            }
+          >
+            {isMobile ? (
+              <>
+                <div className="w-full" style={{ height: `${split}%`, minHeight: '20%', maxHeight: '80%' }}>
+                  {MapView}
+                </div>
+                {/* Stylish, bigger, smoother draggable divider */}
+                <div
+                  className={`w-full h-8 flex items-center justify-center z-20 cursor-row-resize transition-colors duration-200 ${
+                    isDragging ? 'bg-gray-300' : 'bg-gray-100'
+                  }`}
+                  style={{ touchAction: 'none' }}
+                  onMouseDown={handleDragStart}
+                  onTouchStart={handleDragStart}
+                >
+                  <div
+                    className={`w-16 h-3 rounded-full bg-gray-400 shadow-md transition-all duration-200 ${
+                      isDragging ? 'bg-gray-500 scale-110' : 'hover:bg-gray-500'
+                    }`}
+                    style={{
+                      boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)',
+                      transition: 'background 0.2s, transform 0.2s',
+                    }}
+                  />
+                </div>
+                <div
+                  className="w-full overflow-auto bg-white relative z-10"
+                  style={{ height: `${100 - split}%`, minHeight: '20%', maxHeight: '80%' }}
+                >
+                  {ListView}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="w-1/2 h-full">{MapView}</div>
+                <div className="w-1/2 h-full overflow-auto bg-white relative z-10">{ListView}</div>
+              </>
+            )}
+          </div>
+        ) : (
+          <EventFeed />
+        )}
       </div>
     </AppLayout>
   );
