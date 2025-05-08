@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, use } from "react";
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -11,7 +11,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, ChevronRight, Heart, MessageCircle, Share2, Users, Calendar, MapPin, Plus } from "lucide-react"
 
-export default function EventDetailPage({ params }: { params: { id: string } }) {
+export default function EventDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const router = useRouter()
   const [activeTab, setActiveTab] = useState("about")
   const [newInterest, setNewInterest] = useState("")

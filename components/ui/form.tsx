@@ -44,15 +44,31 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
-  const { getFieldState, formState } = useFormContext()
-
-  const fieldState = getFieldState(fieldContext.name, formState)
+  
+  // Check if we're in a form context before trying to use it
+  let fieldState = {} as any
+  let formState = {} as any
+  
+  try {
+    // Only attempt to use form context if it's available
+    if (typeof useFormContext === "function") {
+      const formContext = useFormContext()
+      if (formContext) {
+        const { getFieldState, formState: contextFormState } = formContext
+        formState = contextFormState
+        fieldState = fieldContext?.name ? getFieldState(fieldContext.name, formState) : {}
+      }
+    }
+  } catch (e) {
+    // If no form context is available, we'll use default/empty values
+    console.log("Form context not available, using default values")
+  }
 
   if (!fieldContext) {
     throw new Error("useFormField should be used within <FormField>")
   }
 
-  const { id } = itemContext
+  const { id } = itemContext || { id: "" }
 
   return {
     id,
@@ -86,12 +102,23 @@ const FormItem = React.forwardRef<
 })
 FormItem.displayName = "FormItem"
 
+// Add a standalone FormLabel that doesn't depend on form context
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  const { error, formItemId } = useFormField()
-
+  // Try to use form field context if available, but don't require it
+  let error = undefined
+  let formItemId = undefined
+  
+  try {
+    const formField = useFormField()
+    error = formField?.error
+    formItemId = formField?.formItemId
+  } catch (e) {
+    // If not in a form field context, we'll just use the props as is
+  }
+  
   return (
     <Label
       ref={ref}

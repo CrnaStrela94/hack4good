@@ -24,6 +24,8 @@ export default function OnboardingStep2() {
   const [photoUrl, setPhotoUrl] = useState("")
   const [nameError, setNameError] = useState("")
   const [bioError, setBioError] = useState("")
+  const [age, setAge] = useState("")
+  const [ageError, setAgeError] = useState("")
 
   const [selectedDietary, setSelectedDietary] = useState<string[]>([])
   const [selectedMobility, setSelectedMobility] = useState<string[]>([])
@@ -45,6 +47,14 @@ export default function OnboardingStep2() {
       return false
     }
     setBioError("")
+    return true
+  }
+  const validateAge = (value: string) => {
+    if (!value) {
+      setNameError("Age is required")
+      return false
+    }
+    setNameError("")
     return true
   }
 
@@ -135,6 +145,18 @@ export default function OnboardingStep2() {
                 onBlur={(e) => validateName(e.target.value)}
               />
               {nameError && <p className="text-sm text-destructive">{nameError}</p>}
+            </div>
+            <div className="space-y-2">
+              <Input
+                placeholder="Age"
+                value={age}  
+                onChange={(e) => {
+                  setAge(e.target.value)
+                  if (e.target.value) validateAge(e.target.value)
+                }}
+                onBlur={(e) => validateAge(e.target.value)}
+              />
+              {ageError && <p className="text-sm text-destructive">{ageError}</p>}
             </div>
 
             <div className="space-y-2">
