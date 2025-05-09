@@ -124,7 +124,7 @@ export default function DiscoverPage() {
   );
 
   const MapView = (
-    <div className="flex-1 min-h-[300px]">
+    <div className="flex-1 h-full w-full">
       <SwedenMap events={filteredEvents} filterTags={selectedInterests} />
     </div>
   );
@@ -315,17 +315,20 @@ export default function DiscoverPage() {
           <div
             id="map-list-container"
             className={
-              isMobile ? 'flex flex-col h-[calc(100dvh-8rem)] relative' : 'flex flex-row h-[calc(100dvh-8rem)]'
+              isMobile ? 'flex flex-col h-[calc(100dvh-8rem)] overflow-hidden' : 'flex flex-row h-[calc(100dvh-8rem)]'
             }
           >
             {isMobile ? (
               <>
-                <div className="w-full" style={{ height: `${split}%`, minHeight: '20%', maxHeight: '80%' }}>
+                <div
+                  className="w-full overflow-hidden"
+                  style={{ height: `${split}%`, minHeight: '20%', maxHeight: '80%' }}
+                >
                   {MapView}
                 </div>
                 {/* Stylish, bigger, smoother draggable divider */}
                 <div
-                  className={`w-full h-8 flex items-center justify-center z-20 cursor-row-resize transition-colors duration-200 ${
+                  className={`w-full h-8 flex items-center justify-center z-30 cursor-row-resize transition-colors duration-200 ${
                     isDragging ? 'bg-gray-300' : 'bg-gray-100'
                   }`}
                   style={{ touchAction: 'none' }}
@@ -343,7 +346,7 @@ export default function DiscoverPage() {
                   />
                 </div>
                 <div
-                  className="w-full overflow-auto bg-white relative z-10"
+                  className="w-full overflow-auto relative z-20"
                   style={{ height: `${100 - split}%`, minHeight: '20%', maxHeight: '80%' }}
                 >
                   {ListView}
@@ -351,8 +354,8 @@ export default function DiscoverPage() {
               </>
             ) : (
               <>
-                <div className="w-1/2 h-full">{MapView}</div>
-                <div className="w-1/2 h-full overflow-auto bg-white relative z-10">{ListView}</div>
+                <div className="w-1/2 h-full overflow-hidden">{MapView}</div>
+                <div className="w-1/2 h-full overflow-auto relative">{ListView}</div>
               </>
             )}
           </div>

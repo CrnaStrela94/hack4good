@@ -1,12 +1,26 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/ui/card';
-import { Check } from 'lucide-react';
+import { Check, ChevronLeft } from 'lucide-react';
 
 export default function PricingPage() {
+  const router = useRouter();
+
   return (
     <div className="container mx-auto py-16 px-4">
+      <div className="mb-8">
+        <Button 
+          variant="ghost" 
+          onClick={() => router.back()} 
+          className="flex items-center text-muted-foreground hover:text-foreground"
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Back
+        </Button>
+      </div>
+
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold mb-4">Simple, Transparent Pricing</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -78,6 +92,14 @@ export default function PricingPage() {
               <li className="flex items-center">
                 <Check className="h-5 w-5 text-green-500 mr-2" />
                 <span>Access to private, exclusive events</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-green-500 mr-2" />
+                <span>Host unlimited public events</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-green-500 mr-2" />
+                <span>Add entry FEE on event</span>
               </li>
               <li className="flex items-center">
                 <Check className="h-5 w-5 text-green-500 mr-2" />
