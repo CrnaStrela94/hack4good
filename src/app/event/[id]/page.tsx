@@ -11,6 +11,12 @@ import { ScrollArea, ScrollBar } from '@/src/components/ui/scroll-area';
 import { Input } from '@/src/components/ui/input';
 import { ArrowLeft, ChevronRight, Heart, MessageCircle, Share2, Users, Calendar, MapPin, Plus } from 'lucide-react';
 import AppLayout from '@/src/app/layout-with-nav';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/src/components/ui/dropdown-menu';
 
 export default function EventDetailPage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
@@ -98,6 +104,74 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
     }
   };
 
+  // Function to generate Google Calendar link
+  const getGoogleCalendarLink = () => {
+    // Parse the event date (in a real app, you'd have more precise date information)
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(16, 0, 0); // 4:00 PM
+
+    const endTime = new Date(tomorrow);
+    endTime.setHours(18, 0, 0); // Assuming 2 hours event
+
+    const startDate = tomorrow.toISOString().replace(/-|:|\.\d+/g, '');
+    const endDate = endTime.toISOString().replace(/-|:|\.\d+/g, '');
+
+    const googleCalendarUrl = new URL('https://calendar.google.com/calendar/render');
+    googleCalendarUrl.searchParams.append('action', 'TEMPLATE');
+    googleCalendarUrl.searchParams.append('text', event.title);
+    googleCalendarUrl.searchParams.append('dates', `${startDate}/${endDate}`);
+    googleCalendarUrl.searchParams.append('details', event.description);
+    googleCalendarUrl.searchParams.append('location', `${event.location}, ${event.fullAddress}`);
+
+    return googleCalendarUrl.toString();
+  };
+
+  // Function to generate Apple Calendar link (uses iCal format)
+  const getAppleCalendarLink = () => {
+    // For Apple Calendar, we'll create an ICS file
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(16, 0, 0); // 4:00 PM
+
+    const endTime = new Date(tomorrow);
+    endTime.setHours(18, 0, 0); // Assuming 2 hours event
+
+    const formatDate = (date: Date) => {
+      return date.toISOString().replace(/-|:|\.\d+/g, '');
+    };
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'BEGIN:VEVENT',
+      `DTSTART:${formatDate(tomorrow)}`,
+      `DTEND:${formatDate(endTime)}`,
+      `SUMMARY:${event.title}`,
+      `DESCRIPTION:${event.description}`,
+      `LOCATION:${event.location}, ${event.fullAddress}`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    return URL.createObjectURL(blob);
+  };
+
+  // Function to handle calendar selection
+  const addToCalendar = (calendarType: 'google' | 'apple') => {
+    if (calendarType === 'google') {
+      window.open(getGoogleCalendarLink(), '_blank');
+    } else if (calendarType === 'apple') {
+      const link = document.createElement('a');
+      link.href = getAppleCalendarLink();
+      link.download = `${event.title.replace(/\s+/g, '-')}.ics`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   return (
     <AppLayout>
       <div className="pb-20">
@@ -160,7 +234,15 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
               <Calendar className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
               <div>
                 <p className="font-medium">{event.date}</p>
-                <p className="text-sm text-muted-foreground">Add to your calendar</p>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <p className="text-sm text-muted-foreground cursor-pointer hover:underline">Add to your calendar</p>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => addToCalendar('google')}>Google Calendar</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => addToCalendar('apple')}>Apple Calendar</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               <ChevronRight className="h-5 w-5 text-muted-foreground ml-auto" />
             </div>
