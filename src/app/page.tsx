@@ -26,6 +26,9 @@ export default function WelcomePage() {
         <Button asChild className="mt-4 px-8 py-6 text-lg">
           <Link href="/onboarding/step-1">Get Started</Link>
         </Button>
+        <Button variant="outline" className="mt-4 px-8 py-6 text-lg">
+          <Link href="/login">Login</Link>
+        </Button>
       </div>
     </main>
   );
